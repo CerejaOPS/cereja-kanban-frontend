@@ -1,33 +1,75 @@
-# 🍒 Cereja Frontend
+# React + TypeScript + Vite
 
-O frontend oficial do ecossistema Cereja, um sistema de Kanban integrado com Discord. 
-Este projeto é construído para entregar uma experiência fluída, reativa e moderna.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🛠️ Tecnologias Principais
+Currently, two official plugins are available:
 
-*   **Framework:** React + TypeScript + Vite
-*   **Arquitetura:** Feature-Sliced Design (FSD) - Garantindo alta escalabilidade e separação de responsabilidades.
-*   **Gerenciamento de Estado/API:** TanStack Query (React Query)
-*   **Estilização:** TailwindCSS + Shadcn UI
-*   **Real-time:** Integração via Server-Sent Events (SSE) para atualização instantânea do Kanban.
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
-## 🚀 Como Executar Localmente
+## React Compiler
 
-### Pré-requisitos
-*   Node.js (versão 18+)
-*   NPM, Yarn ou PNPM
+The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
 
-### Passo a passo
-1. Clone este repositório.
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
-4. Acesse `http://localhost:5173` no seu navegador.
+## Expanding the ESLint configuration
 
-## 🏗️ Padrões da Equipe
-Este projeto utiliza **Husky** e **Prettier**. O código será automaticamente formatado antes de cada commit. Certifique-se de ler o arquivo `CONTRIBUTING.md` para entender as regras de pull requests e nomenclatura de branches.
+If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+
+```js
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+
+      // Remove tseslint.configs.recommended and replace with this
+      tseslint.configs.recommendedTypeChecked,
+      // Alternatively, use this for stricter rules
+      tseslint.configs.strictTypeChecked,
+      // Optionally, add this for stylistic rules
+      tseslint.configs.stylisticTypeChecked,
+
+      // Other configs...
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
+
+You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+
+```js
+// eslint.config.js
+import reactX from 'eslint-plugin-react-x'
+import reactDom from 'eslint-plugin-react-dom'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      // Other configs...
+      // Enable lint rules for React
+      reactX.configs['recommended-typescript'],
+      // Enable lint rules for React DOM
+      reactDom.configs.recommended,
+    ],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.node.json', './tsconfig.app.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
+      // other options...
+    },
+  },
+])
+
+```
