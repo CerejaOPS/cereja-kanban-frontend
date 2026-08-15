@@ -50,11 +50,11 @@ export function UserMenu() {
             {initial}
           </div>
         )}
-        <div className="hidden flex-col items-start sm:flex text-left">
+        <div className="hidden flex-col items-start gap-1 sm:flex text-left">
           <span className="text-sm font-semibold text-zinc-200 leading-none truncate max-w-[120px]">
             {user?.name || user?.username || 'Usuário'}
           </span>
-          <span className="text-[10px] text-zinc-500 mt-0.5 truncate max-w-[120px]">
+          <span className="text-[10px] text-zinc-500 truncate max-w-[120px]">
             @{user?.username || 'user'}
           </span>
         </div>

@@ -43,8 +43,25 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
       };
     },
     enabled: open,
-    refetchInterval: open ? 30000 : false, // poll every 30s while open
+    refetchInterval: open ? 30000 : false,
   });
+
+  const { data: heartbeatStatus } = useQuery({
+    queryKey: ['bot-heartbeat'],
+    queryFn: async () => {
+      const { data } = await api.get('/api/bot/status');
+      return data as {
+        online: boolean;
+        lastSeen: string | null;
+        secondsAgo: number;
+        message?: string;
+      };
+    },
+    enabled: open,
+    refetchInterval: open ? 15000 : false,
+  });
+
+  const isBotOnline = discordStatus?.botOnline || heartbeatStatus?.online || false;
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -102,19 +119,19 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                 <div className="mb-6">
                   <div
                     className={`flex items-center gap-4 p-4 rounded-xl border ${
-                      discordStatus?.botOnline
+                      isBotOnline
                         ? 'border-emerald-500/30 bg-emerald-500/5'
                         : 'border-red-500/30 bg-red-500/5'
                     }`}
                   >
                     <div
                       className={`h-12 w-12 rounded-full flex items-center justify-center ${
-                        discordStatus?.botOnline ? 'bg-emerald-500/20' : 'bg-red-500/20'
+                        isBotOnline ? 'bg-emerald-500/20' : 'bg-red-500/20'
                       }`}
                     >
                       {isLoadingDiscord ? (
                         <div className="h-5 w-5 border-2 border-zinc-500 border-t-transparent rounded-full animate-spin" />
-                      ) : discordStatus?.botOnline ? (
+                      ) : isBotOnline ? (
                         <Wifi className="h-5 w-5 text-emerald-400" />
                       ) : (
                         <WifiOff className="h-5 w-5 text-red-400" />
@@ -123,14 +140,21 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                     <div>
                       <h4 className="font-semibold text-sm text-zinc-200">CherDeal Bot</h4>
                       <p
-                        className={`text-xs ${discordStatus?.botOnline ? 'text-emerald-400' : 'text-red-400'}`}
+                        className={`text-xs ${isBotOnline ? 'text-emerald-400' : 'text-red-400'}`}
                       >
                         {isLoadingDiscord
                           ? 'Verificando...'
-                          : discordStatus?.botOnline
+                          : isBotOnline
                             ? '● Online'
                             : '● Offline'}
                       </p>
+                      {heartbeatStatus?.lastSeen && (
+                        <p className="text-[10px] text-zinc-500 mt-1">
+                          Último sinal: {heartbeatStatus.secondsAgo < 60
+                            ? `há ${heartbeatStatus.secondsAgo}s`
+                            : `há ${Math.floor(heartbeatStatus.secondsAgo / 60)}min`}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </div>
