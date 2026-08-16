@@ -5,7 +5,7 @@ import {
   DialogTitle,
   DialogDescription,
 } from '@/shared/ui/dialog';
-import { Settings, Bell, MessageSquare, Hash, Wifi, WifiOff, Bot } from 'lucide-react';
+import { Settings, Bell, MessageSquare, Wifi, WifiOff, Bot } from 'lucide-react';
 import { useState } from 'react';
 import { useAuthStore } from '@/shared/lib/store';
 import { useQuery } from '@tanstack/react-query';
@@ -44,6 +44,8 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
     },
     enabled: open,
     refetchInterval: open ? 30000 : false,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
   const { data: heartbeatStatus } = useQuery({
@@ -59,9 +61,15 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
     },
     enabled: open,
     refetchInterval: open ? 15000 : false,
+    staleTime: 0,
+    refetchOnMount: 'always',
   });
 
-  const isBotOnline = discordStatus?.botOnline || heartbeatStatus?.online || false;
+  // Health check (ping direto) é a fonte de verdade.
+  // Heartbeat só serve como fallback se o health check ainda não carregou.
+  const isBotOnline = discordStatus
+    ? discordStatus.botOnline
+    : (heartbeatStatus?.online ?? false);
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
@@ -138,7 +146,7 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                       )}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-sm text-zinc-200">CherDeal Bot</h4>
+                      <h4 className="font-semibold text-sm text-zinc-200">Discord Bot</h4>
                       <p
                         className={`text-xs ${isBotOnline ? 'text-emerald-400' : 'text-red-400'}`}
                       >
@@ -265,7 +273,7 @@ export function SettingsModal({ open, onClose }: SettingsModalProps) {
                   </div>
 
                   <p className="text-xs text-zinc-500 text-center mt-4">
-                    As notificações são enviadas diretamente pelo <strong>CherDeal Bot</strong> no
+                    As notificações são enviadas diretamente pelo <strong>Discord Bot</strong> no
                     seu Discord pessoal (@{user?.username}).
                   </p>
                 </div>

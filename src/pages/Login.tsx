@@ -12,7 +12,7 @@ export function LoginPage() {
       <Card className="mx-auto max-w-sm border-zinc-800 bg-zinc-900/50 backdrop-blur-xl">
         <CardHeader className="space-y-1 text-center">
           <CardTitle className="text-2xl font-bold tracking-tight text-zinc-100">
-            CherDeal Kanban
+            App Kanban
           </CardTitle>
           <CardDescription className="text-zinc-400">
             Acesse o seu painel logando com o Discord.

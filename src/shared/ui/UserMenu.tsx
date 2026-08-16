@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuthStore } from '@/shared/lib/store';
 import { useNavigate } from '@tanstack/react-router';
-import { LogOut, Settings, User as UserIcon } from 'lucide-react';
+import { LogOut, Settings} from 'lucide-react';
 import { SettingsModal } from '@/features/kanban/SettingsModal';
 
 export function UserMenu() {
