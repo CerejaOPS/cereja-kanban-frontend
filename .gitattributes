@@ -1,0 +1,7 @@
+# Normaliza line endings para LF em todos os arquivos de texto
+* text=auto eol=lf
+
+# Garante que arquivos binários não sejam modificados
+*.png binary
+*.jpg binary
+*.ico binary
