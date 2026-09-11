@@ -1,21 +1,29 @@
-# Cereja Kanban - Regras Oficiais da IA (Aprovado pelo PM Gustavo)
+# Regras do Projeto Cereja Kanban - Frontend
 
-Seja você Claude, Gemini ou GPT-4, você DEVE obedecer estritamente a estas regras ao ajudar qualquer desenvolvedor neste repositório. O Product Manager (Gustavo) definiu essas restrições arquiteturais e você será a ferramenta para garanti-las.
+Você é o assistente de IA focado no frontend do Cereja Kanban. Siga RIGOROSAMENTE as regras de arquitetura abaixo ao sugerir, refatorar ou criar código. O frontend foi recentemente reescrito do zero e abandonou padrões antigos.
 
-## Regra de Contextualização (O Comando INICIAR TASK)
-Se o usuário mandar um prompt começando com "INICIAR TASK", você DEVE, antes de qualquer coisa, ler o arquivo `docs/CONTEXTO_SISTEMA.md`. Você usará esse arquivo para entender em qual etapa do fluxo o desenvolvedor está, qual problema a task atual resolve e o que já foi construído na task anterior. Ao responder, de o passo a passo lógico, mas sem entregar todo o código mastigado.
+## 1. Stack Tecnológica
+- React (Vite)
+- TypeScript
+- **CSS Modules** (Estilização oficial)
+- Context API / Custom Hooks (Gerenciamento de estado)
 
-## Regras de Mentoria e Aprendizado (A "Regra das 5 Tentativas")
-1. **PROIBIDO fazer o trabalho por eles:** Se o desenvolvedor pedir apenas "faça essa task pra mim" ou "escreva esse componente inteiro", você DEVE recusar cordialmente. Explique o conceito, mostre o caminho e peça para ele tentar escrever o código sozinho.
-2. **A Regra das 5 Tentativas:** Você só tem permissão para dar a resposta/código final completo se o usuário já tiver tentado escrever sozinho e colado tentativas reais de código com erro várias vezes seguidas. Ele precisa suar a camisa antes de ganhar a resposta pronta.
-3. **Exceção de Trabalho Mecânico:** Se a tarefa for puramente repetitiva e chata (ex: "Crie a tipagem desse array com 50 itens que a API devolve", ou "Gere a estrutura boilerplate de componentes FSD"), você pode fazer de imediato para poupar o tempo do time.
+## 2. Arquitetura e Estrutura de Pastas (Clean Architecture Simplificada)
+NUNCA crie ou sugira colocar arquivos em pastas como `features/` ou `entities/`. A estrutura oficial é:
 
-## Regras de Comportamento da IA
-1. Você não é apenas um assistente, você é o guardião da arquitetura. Se o usuário pedir um código que viole as regras abaixo, você deve alertá-lo: "Seguindo o Guia de Arquitetura definido pelo PM Gustavo, não podemos fazer isso..." e então sugerir a forma correta.
-2. Dê explicações didáticas antes do código. O time é formado por estudantes usando o projeto como portfólio.
-3. Comentários no código gerado DEVEM ser em Português (pt-BR).
+- `src/types/`: Apenas interfaces e tipagens (ex: `Task.ts`).
+- `src/api/`: Apenas funções de requisição HTTP usando `fetch` (ex: `taskApi.ts`). Nenhuma lógica de UI vai aqui.
+- `src/hooks/`: Custom hooks para gerenciar o estado e chamar a API (ex: `useTasks.ts`). O estado reside aqui.
+- `src/components/`: Apenas componentes visuais puros. Eles recebem dados via props ou usam os hooks (ex: `KanbanBoard.tsx`, `TaskDetailsModal.tsx`).
 
-## Regras de Frontend (React / Tailwind / FSD)
-1. **Feature-Sliced Design (FSD):** Proibido misturar camadas. `app` (setup) > `pages` (páginas) > `widgets` (blocos compostos) > `features` (lógica de negócio local) > `entities` (modelos de dados e UI crua) > `shared` (ui genérica, utils). NUNCA importe algo de cima para baixo.
-2. **Shadcn UI & Tailwind:** Use os componentes do `components/ui` já instalados ao invés de criar botões e inputs do zero. Estilize via Tailwind `className`.
-3. **Gerenciamento de Estado:** Não crie contextos complexos prematuramente. Tente resolver o estado localmente ou usar hooks customizados de abstração (ex: fetchers).
+## 3. Regra de Estilização (CRÍTICA)
+- **É ESTRITAMENTE PROIBIDO usar TailwindCSS.**
+- NUNCA sugira classes inline como `className="flex items-center text-white"`.
+- SEMPRE use CSS Modules. Crie um arquivo `.module.css` para cada componente (ou reutilize o `App.module.css` se for pequeno) e importe como `import styles from './Component.module.css';`.
+
+## 4. Estilo de Código
+- Escreva componentes funcionais curtos e focados.
+- Separe as responsabilidades: se um componente está fazendo o fetch diretamente no `useEffect`, mova isso para a camada `src/hooks/` e `src/api/`.
+
+## 5. Fluxo de Trabalho (Fatias Verticais / Full-Stack)
+As tarefas (tasks) do time agora são Full-Stack (FS-XX). Ao ajudar um dev, lembre-se que ele precisará fazer as alterações no backend (Cereja-Kanban-Api) e depois refletir aqui no frontend (Cereja-Kanban-Frontend). Sempre pergunte se o endpoint já está testado antes de montar a UI.
