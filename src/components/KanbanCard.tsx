@@ -5,9 +5,10 @@ import styles from '../App.module.css';
 
 interface Props {
   task: Task;
+  onCardClick?: (task: Task) => void;
 }
 
-export function KanbanCard({ task }: Props) {
+export function KanbanCard({ task, onCardClick }: Props) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: task.id,
   });
@@ -15,7 +16,14 @@ export function KanbanCard({ task }: Props) {
   const style = { transform: CSS.Translate.toString(transform) };
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className={styles.card}>
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      className={styles.card}
+      onClick={() => onCardClick?.(task)}
+    >
       <span className={styles.taskId}>#{task.id}</span>
       <p className={styles.taskTitle}>{task.title}</p>
     </div>
