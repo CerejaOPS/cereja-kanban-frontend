@@ -1,8 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
-import { Task } from '../types/Task';
-import styles from '../App.module.css';
-
+import { Task } from '../../types/Task';
+import styles from '../../App.module.css';
 interface Props {
   task: Task;
   onCardClick?: (task: Task) => void;

@@ -1,7 +1,7 @@
 import { useDroppable } from '@dnd-kit/core';
-import { Task } from '../types/Task';
+import { Task } from '../../types/Task';
 import { KanbanCard } from './KanbanCard';
-import styles from '../App.module.css';
+import styles from '../../App.module.css';
 
 interface Props {
   fase: string;

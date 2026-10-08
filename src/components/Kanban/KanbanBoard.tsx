@@ -1,7 +1,7 @@
 import { DndContext, DragEndEvent, useSensor, useSensors, PointerSensor } from '@dnd-kit/core';
-import { Task } from '../types/Task';
+import { Task } from '../../types/Task';
 import { KanbanColumn } from './KanbanColumn';
-import styles from '../App.module.css';
+import styles from '../../App.module.css';
 
 const PHASES = ['backlog', 'todo', 'andamento', 'concluido'];
 
