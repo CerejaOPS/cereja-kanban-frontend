@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useTasks } from './hooks/useTask'
-import { KanbanBoard } from './components/KanbanBoard';
-import { TaskDetailsModal } from './components/TaskDetailsModal';
+import { KanbanBoard } from './components/Kanban/KanbanBoard';
+import { TaskDetailsModal } from './components/Task/TaskDetailsModal';
 import { Task } from './types/Task';
 import styles from './App.module.css';
 
 function App() {
-  const { tasks, handleMove, handleUpdateTask } = useTasks();
+  const { tasks, handleMove, handleUpdateTask, handleDeleteTask } = useTasks();
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   return (
@@ -21,6 +21,7 @@ function App() {
         onClose={() => setSelectedTask(null)} 
         onSave={(updatedTask) => { handleUpdateTask(updatedTask); setSelectedTask(null); 
         }}
+        onDelete={(taskId) => { handleDeleteTask(taskId); setSelectedTask(null); }}
       />
     </div>
   );

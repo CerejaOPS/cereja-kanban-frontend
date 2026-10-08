@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Task } from '../types/Task';
-import { fetchTasks, moveTask } from '../api/taskApi';
+import { deleteTask, fetchTasks, moveTask, updateTask } from '../api/taskApi';
 
 // Mocks de tarefas para testar o quadro enquanto o backend não estiver rodando
 const MOCK_INITIAL_TASKS: Task[] = [
@@ -67,7 +67,18 @@ export function useTasks() {
   function handleUpdateTask(updatedTask: Task){
     setTasks((atual) => 
       atual.map((task) => (task.id === updatedTask.id ? updatedTask : task)));
+
+    updateTask(updatedTask.id, updatedTask).catch((e) => console.error(e));
   }
 
-  return { tasks, handleMove, handleUpdateTask };
+  function handleDeleteTask(taskId: number) {
+  // remove do estado local
+  setTasks((atual) => atual.filter((task) => task.id !== taskId));
+  // avisa o backend
+  deleteTask(taskId).catch((e) => console.error(e));
+}
+
+
+
+  return { tasks, handleMove, handleUpdateTask, handleDeleteTask };
 }
