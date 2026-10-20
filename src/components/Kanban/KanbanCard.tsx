@@ -1,7 +1,7 @@
-import { useDraggable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
-import { Task } from '../../types/Task';
-import styles from '../../App.module.css';
+import { useDraggable } from "@dnd-kit/core";
+import { CSS } from "@dnd-kit/utilities";
+import { Task } from "../../types/Task";
+import styles from "../../App.module.css";
 interface Props {
   task: Task;
   onCardClick?: (task: Task) => void;
@@ -10,16 +10,16 @@ interface Props {
 // Função auxiliar: recebe a prioridade e devolve a classe do App.module.css correspondente
 function getPriorityClass(priority?: string) {
   switch (priority?.toLowerCase()) {
-    case 'baixa':
+    case "baixa":
       return styles.priorityBaixa;
-    case 'media':
+    case "media":
       return styles.priorityMedia;
-    case 'alta':
+    case "alta":
       return styles.priorityAlta;
-    case 'urgente':
+    case "urgente":
       return styles.priorityUrgente;
     default:
-      return ''; // caso a task não tenha prioridade, não adiciona borda extra
+      return ""; // caso a task não tenha prioridade, não adiciona borda extra
   }
 }
 
@@ -39,7 +39,18 @@ export function KanbanCard({ task, onCardClick }: Props) {
       className={`${styles.card} ${getPriorityClass(task.priority)}`} // Borda colorida junto ao Card
       onClick={() => onCardClick?.(task)}
     >
-      <span className={styles.taskId}>#{task.id} {task.priority?.toLowerCase() === 'urgente' && '🔥'}</span>
+      <span className={styles.taskId}>
+        #{task.id}
+        {task.priority?.toLowerCase() === "urgente" && (
+          <span
+            role="img"
+            aria-label="Prioridade Urgente"
+            title="Prioridade Urgente"
+          >
+            🔥
+          </span>
+        )}
+      </span>
       <p className={styles.taskTitle}>{task.title}</p>
     </div>
   );
