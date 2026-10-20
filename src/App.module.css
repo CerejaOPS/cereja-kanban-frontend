@@ -72,7 +72,9 @@
 
 /* Efeito ao passar o mouse por cima do card */
 .card:hover {
-  border-color: #6ee7b7;
+  border-top-color: #6ee7b7;
+  border-right-color: #6ee7b7;
+  border-bottom-color: #6ee7b7;
 }
 
 .taskId {
