@@ -1,0 +1,64 @@
+name: Frontend CI Watchdog
+
+on:
+  push:
+    branches: [ "main", "rc" ]
+  pull_request:
+    branches: [ "main", "rc" ]
+
+jobs:
+  lint-and-architecture:
+    name: STAGE 1 - Lint & Architecture (FSD)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Verify Code Style and Architecture
+        run: npm run lint
+
+  automated-tests:
+    name: STAGE 2 - Automated Tests
+    runs-on: ubuntu-latest
+    needs: lint-and-architecture
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Run Tests
+        run: echo "No tests configured yet. Placeholder for Vitest / React Testing Library."
+
+  type-check-and-compile:
+    name: STAGE 3 - Strict Type Checking
+    runs-on: ubuntu-latest
+    needs: automated-tests
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: TypeScript Type Checking
+        run: npx tsc -b
+
+  build:
+    name: STAGE 4 - Production Build
+    runs-on: ubuntu-latest
+    needs: type-check-and-compile
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - name: Build Application
+        run: npm run build
