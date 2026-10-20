@@ -53,6 +53,23 @@
   transition: border-color 0.2s;
 }
 
+/* Visual de prioridades de Task */
+.priorityBaixa{
+  border-left: 4px solid #71717a;
+}
+
+.priorityMedia{
+  border-left: 4px solid #60a5fa;
+}
+
+.priorityAlta{
+  border-left: 4px solid #fb923c;
+}
+
+.priorityUrgente{
+  border-left: 4px solid #f87171;
+}
+
 /* Efeito ao passar o mouse por cima do card */
 .card:hover {
   border-color: #6ee7b7;
