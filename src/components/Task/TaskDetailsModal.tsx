@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
-import { Task, ChecklistItem, TaskComment } from "../../types/Task";
+import { Task, ChecklistItem, TaskComment, BoardMember } from "../../types/Task";
 import styles from "./TaskDetailsModal.module.css";
 
 // Propriedades a receber
 interface Props {
   task: Task | null; // Task clicada
+  members?: BoardMember[];
   isOpen: boolean; // Modal aparece ou nao
   onClose: () => void; // Função para fechar
   onSave?: (updatedTask: Task) => void; // Atualizar task no board
+  onAssign?: (taskId: number, member: BoardMember | null) => void;
   onDelete?: (taskId: number) => void; // Excluir task
 }
 
@@ -29,9 +31,11 @@ const MOCK_COMMENTS: TaskComment[] = [
 
 export function TaskDetailsModal({
   task,
+  members = [],
   isOpen,
   onClose,
   onSave,
+  onAssign,
   onDelete,
 }: Props) {
   // Estados locais para edição dos campos de tarefa
@@ -218,7 +222,22 @@ export function TaskDetailsModal({
                   ? task.assignee.name.charAt(0).toUpperCase()
                   : "?"}
               </div>
-              <span>{task.assignee?.name || "Não atribuído"}</span>
+              <select
+                className={styles.assigneeSelect}
+                value={task.assignee?.discordId || ""}
+                onChange={(e) => {
+                  const selectedId = e.target.value;
+                  const selectedMember = members.find((m) => m.discordId === selectedId) || null;
+                  onAssign?.(task.id, selectedMember);
+                }}
+              >
+                <option value="">Não atribuído</option>
+                {members.map((member) => (
+                  <option key={member.id} value={member.discordId}>
+                    {member.username} {member.role ? `(${member.role})` : ""}
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 

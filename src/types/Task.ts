@@ -22,3 +22,11 @@ export interface TaskComment{
   text: string;
   createdAt: string;
 }
+
+export interface BoardMember {
+  id: number;
+  discordId: string;
+  username: string;
+  avatar?: string;
+  role?: string;
+}

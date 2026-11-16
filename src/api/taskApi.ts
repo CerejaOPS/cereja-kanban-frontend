@@ -1,4 +1,4 @@
-import { Task } from "../types/Task";
+import { Task, BoardMember } from "../types/Task";
 
 const BASE_URL = "http://localhost:8080/api";
 
@@ -48,4 +48,29 @@ export async function deleteTask(taskId: number) {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
   });
+}
+
+// Busca a lista de membros associados a um quadro específico.
+export async function fetchBoardMembers(boardId: number = 1): Promise<BoardMember[]> {
+  const response = await fetch(`${BASE_URL}/boards/${boardId}/members`);
+  if(!response.ok){
+    throw new Error("Erro ao carregar membros do quadro");
+  }
+  return response.json();
+}
+
+// Atribui ou remove o responsável por uma tarefa no backend
+export async function assignTask(
+  taskId: number,
+  assigneeDiscordId: string | null
+): Promise<Task> {
+  const response = await fetch(`${BASE_URL}/tasks/${taskId}/assign`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ assigneeDiscordId }),
+  });
+  if (!response.ok) {
+    throw new Error("Erro ao atribuir responsável à tarefa");
+  }
+  return response.json();
 }

@@ -52,6 +52,16 @@ export function KanbanCard({ task, onCardClick }: Props) {
         )}
       </span>
       <p className={styles.taskTitle}>{task.title}</p>
+      {task.assignee?.name && (
+        <div className={styles.cardFooter}>
+          <div
+            className={styles.cardAvatar}
+            title={`Responsável: ${task.assignee.name}`}
+          >
+            {task.assignee.name.charAt(0).toUpperCase()}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
