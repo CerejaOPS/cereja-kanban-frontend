@@ -385,3 +385,19 @@
   font-size: 0.75rem;
   cursor: pointer;
 }
+
+.assigneeSelect {
+  background: transparent;
+  color: #fafafa;
+  border: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  outline: none;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+}
+
+.assigneeSelect option {
+  background-color: #18181b;
+  color: #fafafa;
+}
